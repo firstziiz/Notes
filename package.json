@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/firstziiz/Notes/issues"
   },
-  "homepage": "https://github.com/firstziiz/Notes#readme"
+  "homepage": "https://github.com/firstziiz/Notes#readme",
+  "devDependencies": {
+    "express": "^4.13.4"
+  }
 }
