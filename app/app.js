@@ -1,4 +1,4 @@
-var app = angular.module('notesApp', ['ngSanitize', 'firebase']);
+var app = angular.module('smy', ['ngSanitize', 'firebase']);
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -10,7 +10,6 @@ marked.setOptions({
   smartLists: true,
   smartypants: false,
   highlight: function(code, lang) {
-
     // in case, there is code without language specified
     if (lang) {
       return hljs.highlight(lang, code).value;
@@ -20,18 +19,29 @@ marked.setOptions({
   },
 });
 
-app.controller('markedController', ['$scope', '$http','$firebaseObject',function($scope, $http, $firebaseObject) {
-  var ref = new Firebase("https://ch-notes.firebaseio.com/");
-  var markdown = this; // alias for 'this', so we can access it in $scope.$watch
-  var mdtext = $firebaseObject(ref);
+app.controller('summaryController', ['$scope', '$http', '$firebaseArray', function($scope, $http, $firebaseArray) {
+  var smyRef = new Firebase("https://ch-notes.firebaseio.com/summary");
+  var query = smyRef.orderByChild("timestamp");
+  var summaries = $firebaseArray(query);
+  $scope.summaries = summaries;
+  // console.log(summaries);
 
-  mdtext.$bindTo($scope, "data");
+  $scope.addSummary = function() {
+    console.log('add complete.')
+    var timestamp = new Date().valueOf();
+    $scope.summaries.$add({
+      smyName: 'Emtry',
+      smyText: '...',
+    });
+  };
+}]);
 
-  this.inputText = '';
+app.controller('smyController', ['$scope', function($scope) {
 
-  $scope.$watch('marked.inputText', function(current, original) {
-    markdown.outputText = marked(current);
+  $scope.$watch('smy.smyText', function(current, original) {
+    $scope.outputText = marked(current);
   });
+
 }]);
 
 app.directive("autoGrow", function() {

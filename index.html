@@ -1,52 +1,53 @@
-<!DOCTYPE html>
-<html ng-app="notesApp">
+<html ng-app="smy">
+
 <head>
-    <title>Notes</title>
-    <meta charset="UTF-8">
-    <!-- Notes -->
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./bower_components/highlightjs/styles/railscasts.css">
-    <!-- Style -->
-    <style type="text/css" media="screen">
-      body {
-        padding-top: 100px;
-      }
-      textarea{
-        overflow: hidden;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <!-- Notes -->
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./bower_components/highlightjs/styles/railscasts.css">
+  <!-- Style -->
+  <style>
+    .row.ng-scope {
+      padding: 20px;
+    }
+  </style>
 </head>
-<body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid" ng-controller="markedController as marked">
-    <!-- <h2>GitHub flavored markdown with angular.js and marked</h2> -->
-    <div class="row">
-    <div class="col-sm-6">
-      <form ng-submit="addMessage()">
-        <textarea class="form-control" id="inputText" ng-model="marked.inputText" auto-grow></textarea>
-        <input type="submit" value="Add Message">
-      </form>
-    </div>
-    <div class="col-sm-6">
-      <div id="outputText" ng-bind-html="marked.outputText"></div>
-    </div>
-
-    <!-- <pre>{{ message | json }}</pre>
-    <textarea class="form-control" id="inputText" ng-model="message" ng-change="message.$save()" auto-grow></textarea> -->
-    <pre></pre>
+<body ng-controller="summaryController" class="container">
+  <div class="row">
+    <button class="btn btn-primary" ng-click="addSummary()">เพิ่มสรุป</button>
   </div>
+  <div class="row" ng-repeat="smy in summaries" ng-controller="smyController as sum">
+    <div class="col-md-6">
+      <div class="row">
+        <input type="text" class="form-control" id="smyName" ng-model="smy.smyName" required ng-minlength="3">
+      </div>
+      <div class="row">
+        <textarea class="form-control" id="smyText" ng-model="smy.smyText" required ng-minlength="3" ng-change="summaries.$save(smy)" auto-grow></textarea>
+      </div>
+      <div class="row">
+        <button class="btn btn-danger" ng-click="summaries.$remove(smy)">ลบ</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <h2>{{ smy.smyName }}</h2>
+      </div>
+      <div class="row">
+        <div id="outputText" ng-bind-html="outputText"></div>
+      </div>
+    </div>
   </div>
-</nav>
+  <!-- <pre ng-repeat="smy in summaries"> {{ smy | json }}</pre> -->
 
-<!-- application HTML will go here -->
-
-<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
-<script type="text/javascript" src="./bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-<script type="text/javascript" src="./bower_components/marked/lib/marked.js"></script>
-<script type="text/javascript" src="./bower_components/highlightjs/highlight.pack.js"></script>
-<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
-<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
-<script type="text/javascript" src="./app/app.js"></script>
+  <!-- application HTML will go here -->
+  <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="./bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="./bower_components/marked/lib/marked.js"></script>
+  <script type="text/javascript" src="./bower_components/highlightjs/highlight.pack.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
+  <script type="text/javascript" src="./app/app.js"></script>
 </body>
+
 </html>
